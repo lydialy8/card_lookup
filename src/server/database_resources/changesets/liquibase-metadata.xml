@@ -6,7 +6,7 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-    <changeSet id="Create card_details table" author="card_usr">
+    <changeSet id="Create card_details table" author="card_usr" runOnChange="true">
         <preConditions onFail="MARK_RAN" onFailMessage="WARN: Table 'card_details' already exists. Changeset was not run assuming current table's structure is correct.">
             <not>
                 <sqlCheck expectedResult="1">SELECT count(1) FROM pg_tables WHERE schemaname='${schema}' and tablename='card_details'</sqlCheck>
