@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet id="Create card_details table" author="card_usr">
+        <preConditions onFail="MARK_RAN" onFailMessage="WARN: Table 'card_details' already exists. Changeset was not run assuming current table's structure is correct.">
+            <not>
+                <sqlCheck expectedResult="1">SELECT count(1) FROM pg_tables WHERE schemaname='${schema}' and tablename='card_details'</sqlCheck>
+            </not>
+        </preConditions>
+
+        <createTable tableName="card_details" schemaName="${schema}">
+            <column name="id" type="SERIAL">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_id" />
+            </column>
+            <column name="card_number" type="nvarchar(50)"></column>
+            <column name="scheme" type="nvarchar(50)"></column>
+            <column name="type" type="nvarchar(200)"></column>
+            <column name="bank" type="nvarchar(200)"></column>
+            <column name="query_time" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP"> </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

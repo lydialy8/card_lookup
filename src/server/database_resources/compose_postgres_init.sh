@@ -1,0 +1,10 @@
+#!/bin/bash
+set -e
+
+psql -v ON_ERROR_STOP=1 --username postgres <<-EOSQL
+	CREATE USER "cards_usr" WITH PASSWORD 'P@ssw0rd';
+	CREATE SCHEMA IF NOT EXISTS "cards";
+	ALTER SCHEMA "cards" OWNER TO "cards_usr";
+	ALTER DEFAULT PRIVILEGES IN SCHEMA "cards" GRANT ALL PRIVILEGES ON TABLES TO "cards_usr";
+	ALTER DEFAULT PRIVILEGES IN SCHEMA "cards" GRANT USAGE ON SEQUENCES TO "cards_usr";
+EOSQL

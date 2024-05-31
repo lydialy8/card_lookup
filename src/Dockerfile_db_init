@@ -1,0 +1,21 @@
+FROM liquibase:4.28-alpine
+
+WORKDIR /liquibase
+
+USER root
+COPY wait-for .
+RUN chmod 777 wait-for
+COPY server/database_resources/changesets/liquibase-metadata.xml ./
+RUN chmod 776 ./liquibase-metadata.xml
+USER liquibase
+
+CMD ./wait-for ${POSTGRES_HOST}:${POSTGRES_PORT} -t 80 -- \
+    liquibase --defaultsFile=/liquibase.properties \
+    --changeLogFile=liquibase-metadata.xml  \
+    --url=jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/postgres  \
+    --username=${POSTGRES_USER} \
+    --password=${POSTGRES_PASSWORD} \
+    --defaultSchemaName=${POSTGRES_DB} \
+    --logLevel=INFO \
+    update \
+    -Dschema=${POSTGRES_DB}

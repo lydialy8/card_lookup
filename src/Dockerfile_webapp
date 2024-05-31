@@ -1,0 +1,35 @@
+# Stage 1: Build the client
+FROM node:20 AS client-builder
+
+# Set the working directory for the client
+WORKDIR /app/client
+
+# Copy the client application files
+COPY ./client/package.json ./client/package-lock.json ./
+COPY ./client/ ./
+
+# Install dependencies and build the client
+RUN npm install
+RUN npm run build
+
+# Stage 2: Build the server
+FROM node:20 AS server-builder
+
+# Set the working directory for the server
+WORKDIR /app/server
+
+# Copy the server application files
+COPY ./server/package.json ./server/package-lock.json ./
+COPY ./server/ ./
+
+# Install dependencies for the server
+RUN npm install
+
+# Copy the built client files from the previous stage
+COPY --from=client-builder /app/client/build ./public
+
+# Expose the port on which the server will run
+EXPOSE 3001
+
+# Command to start the server
+CMD ["node", "app.js"]
