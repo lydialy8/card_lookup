@@ -1,8 +1,7 @@
 const express = require("express"); // Import the Express framework
-const path = require("path"); // Import the path module for handling file and directory paths
 const bodyParser = require("body-parser"); // Import body-parser for parsing request bodies
 const cardDetails = require("./routes/card_details"); // Import the routes for card details
-
+const config = require("./config");
 const app = express(); // Create an Express application
 const http = require("http"); // Import the http module
 const httpServer = http.createServer(app); // Create an HTTP server
@@ -37,7 +36,7 @@ app.use((err, req, res, next) => {
 });
 
 // Set the port number
-const port = 3001;
+const port = config.port;
 httpServer.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`); // Log a message when the server starts
 });

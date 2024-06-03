@@ -1,13 +1,12 @@
 const express = require("express"); // Import the Express framework
 const router = express.Router(); // Create a new router object
 const axios = require("axios"); // Import axios for making HTTP requests
+const config = require("../config"); // import the config
 const { Pool } = require("pg"); // Import the pg module for PostgreSQL
 
 // Use environment variables for sensitive information like database connection strings
 const connProperties = {
-  connectionString:
-    process.env.DATABASE_URL ||
-    "postgres://cards_usr:P@ssw0rd@cards_lookup_db:5432/postgres",
+  connectionString: config.psql_conn_str,
 };
 const pool = new Pool(connProperties); // Create a new PostgreSQL connection pool
 
